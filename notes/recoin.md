@@ -174,5 +174,3 @@ Understanding React’s Virtual DOM, Reconciliation, and Diffing helps you:
     
     Deeply nested components can increase reconciliation time. Keep your components simple.
     
-
----

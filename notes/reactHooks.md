@@ -540,3 +540,137 @@ function App() {
 export default App;
 
 ```
+
+# useContex Hook
+
+- useContext is a react hook that allows you access data from any component without explicitly passing it down through props at every level
+
+- useContext is used to manage Global data in the React App
+
+![alt text](image-9.png)
+
+- the image shows the problem, when we have to pass the data from parent to child component, so, to solve this problem, we need to use useContext hook.
+- managing and updating the data is difficult, when we have to pass the data from parent to child component, so, to solve this problem, we need to use useContext hook.
+
+## 3 steps to use useContext hook
+1. create a context
+2. provide the context
+3. consume the context
+
+### example of useContext hook
+![alt text](image-10.png)
+```jsx
+import { createContext } from "react"
+
+export const AppContext = createContext()
+
+const ContextProvider = (props) => {
+    const phone = "+2 123 456 7890"
+    const name = "ar lab"
+    return(
+        <AppContext.Provider value={{phone,name}}>
+            {props.children}
+        </AppContext.Provider>
+    )
+}
+
+export default ContextProvider
+
+```
+```jsx
+import logo from './logo.svg'
+import './App.css'
+import Profile from './components/Profile'
+import Footer from './components/Footer'
+
+function App() {
+  return (
+    <>
+       <Profile/>
+       <Footer/>
+    </>
+  );
+}
+
+export default App;
+
+```
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import ContextProvider from './context/AppContext';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <ContextProvider>
+    <React.StrictMode>
+    <App />
+  </React.StrictMode>
+  </ContextProvider>
+  
+);
+
+reportWebVitals();
+
+```
+
+```jsx
+import React, { useContext } from 'react'
+import { AppContext } from '../context/AppContext'
+
+const Footer = () => {
+    const {phone,name} = useContext(AppContext) 
+  return (
+    <div>
+        <h2>Footer</h2>
+        <h3>Phone : {phone}</h3>
+        <h3>Name : {name}</h3>
+    </div>
+  )
+}
+
+export default Footer
+```
+
+```jsx
+import React from 'react'
+import Contact from './Contact'
+
+const Profile = () => {
+  return (
+    <div>
+        <h1>Profile</h1>
+        <Contact/> 
+    </div>
+  )
+}
+
+export default Profile
+```
+
+```jsx
+import React, { useContext } from 'react'
+import { AppContext } from '../context/AppContext'
+
+const Contact = () => {
+    const {phone,name} = useContext(AppContext)
+
+  return (
+    <div>
+        <h2>Contact</h2>
+        <h3>Phone : {phone}</h3>
+        <h3>Name : {name}</h3>
+    </div>
+  )
+}
+
+export default Contact
+
+```
+
+- just follow above mention 3 steps and you will be able to use useContext hook in your react app.
+- Note : AppContext.jsx file is import for syntax
+
