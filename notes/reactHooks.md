@@ -674,3 +674,82 @@ export default Contact
 - just follow above mention 3 steps and you will be able to use useContext hook in your react app.
 - Note : AppContext.jsx file is import for syntax
 
+# useReducer 
+- useReducer is similar to useState, but instead of providing state and setter function, it provide state and dispatch function.
+- The useReducer hook is accepts 2 arguments
+1. reducer function
+2. initial state
+- and returns : current state and dispatch function
+- The reducer function specifies how the state gets updated.
+
+```jsx
+import { useReducer } from 'react';
+import './App.css'
+import { type } from '@testing-library/user-event/dist/type';
+
+
+function App() {
+  const initialState = {count : 0}
+  const reducer = (state, action) => {
+    switch(action.type){
+      case 'increase':
+        return {count : state.count + 1}
+      case 'decrease':
+        return {count : state.count -1}
+      default:
+        return state
+
+    }
+  }
+  const [state,dispatch] = useReducer(reducer, initialState)
+
+  return (
+    <>
+       <h1>count is : {state.count}</h1>
+       <button onClick={()=>dispatch({type : 'increase'})}>increase</button> 
+       <button onClick={()=>dispatch({type : 'decrease'})}>decrease</button>
+    </>
+  );
+}
+
+export default App;
+
+```
+
+- we can add more action type, as data as payload
+
+```jsx
+import { useReducer } from 'react';
+import './App.css'
+import { type } from '@testing-library/user-event/dist/type';
+
+
+function App() {
+  const initialState = {count : 0}
+  const reducer = (state, action) => {
+    switch(action.type){
+      case 'increase':
+        return {count : state.count + 1}
+      case 'decrease':
+        return {count : state.count -1}
+      case 'input':
+        return {count : action.payload}
+      default:
+        return state
+    }
+  }
+  const [state,dispatch] = useReducer(reducer, initialState)
+
+  return (
+    <>
+       <h1>count is : {state.count}</h1>
+       <button onClick={()=>dispatch({type : 'increase'})}>increase</button> 
+       <button onClick={()=>dispatch({type : 'decrease'})}>decrease</button>
+       <br>
+       </br>
+       <input value={state.count} onChange={(e)=>dispatch({type: 'input',payload:Number(e.target.value)})} type='number'/>  
+    </>
+  );
+}
+export default App;
+```
