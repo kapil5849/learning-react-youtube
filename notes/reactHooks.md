@@ -753,3 +753,107 @@ function App() {
 }
 export default App;
 ```
+
+# useMemo Hook 
+- The React useMemo Hook returns a memoized value. (it's like caching a value so that it doesn't need to be recalculated)
+- The useMemo Hook only runs when one of its dependencies gets updated
+- This can improve the performance of the application. There is one more hook in react to improve performance, that is useCallback hook.
+- Both are similar but the difference is that useMemo returns a memoized value and useCallback returns a memoized function.
+
+```jsx
+import React, { useState } from 'react'
+
+const App = () => {
+  const [number, setNumber] = useState(0)
+  const [counter, setCounter] = useState(0)
+  function cubeNum(num){
+    console.log('Calculation done!')
+    return Math.pow(num,3)
+  }
+  const result = cubeNum(number)
+
+  return (
+    <div>
+      <input type='number' value={number} onChange={(e)=>{setNumber(e.target.value)}} />
+      <h1>cube of the number : {result}</h1>
+      <button onClick={()=>{setCounter(counter+1)}}>counter ++</button>
+      <h1>Counter : {counter}</h1>
+    </div>
+  )
+}
+
+export default App
+```
+
+- in the above example, when we change the input field, the cubeNum function will run, and it will re-calculate the cube of the number, so, to solve this problem, we need to use useMemo hook.
+
+```jsx
+import React, { useMemo, useState } from 'react'
+
+const App = () => {
+  const [number, setNumber] = useState(0)
+  const [counter, setCounter] = useState(0)
+  function cubeNum(num){
+    console.log('Calculation done!')
+    return Math.pow(num,3)
+  }
+  const result = useMemo(()=>cubeNum(number),[number]) // useMemo will only re-calculate the value when the number changes, not at counter button 
+
+  return (
+    <div>
+      <input type='number' value={number} onChange={(e)=>{setNumber(e.target.value)}} />
+      <h1>cube of the number : {result}</h1>
+      <button onClick={()=>{setCounter(counter+1)}}>counter ++</button>
+      <h1>Counter : {counter}</h1>
+    </div>
+  )
+}
+
+export default App
+```
+
+# useCallback Hook
+- useCallback is a React Hook that lets you cache a function definition between re-renders.
+- It means, when we use the useCallback hook, it doesn't create multiple instance of same function when re-render happens.
+- instead of creating new instance of the function, it provides the cached function on re-render of the component.
+
+```jsx
+import React, { useMemo, useState } from 'react'
+import Header from './components/Header'
+
+const App = () => {
+ 
+  const [count, setCount] = useState(0)
+  
+  return (
+    <>
+    <Header/>
+    <h1>{count}</h1> 
+    <button onClick={()=>setCount(prev=>prev+1)}>click here</button>
+    </>
+  )
+}
+
+export default App
+```
+
+```jsx
+import React from 'react'
+
+const Header = () => {
+    console.log('Header rendered')
+  return (
+    <div>
+        <h1>Header</h1>
+    </div>
+  )
+}
+
+export default Header
+```
+- in the above example, when we click on button, the header component will re-render, so, to solve this problem, we need to use useCallback hook.
+- we are mounted Header in app.js file, so, when we click on button, the header component will re-render, so, to solve this problem, we need to use useCallback hook.
+
+```jsx
+
+```
