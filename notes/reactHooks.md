@@ -950,4 +950,54 @@ export default App
 
 # useLayoutEffect Hook
 
+- useLayoutEffect is similar to useEffect, but it is called before the user interface gets mounted.
+- useEffect is called after the printing the DOM elements. useLayoutEffect gets called before printing the DOM elements.
 
+```jsx
+import React, { useEffect, useLayoutEffect } from 'react'
+
+const App = () => {
+  useEffect(()=>{
+    console.log('message from useEffect')
+  })
+  useLayoutEffect(()=>{
+    console.log('message from useEffectLayout')
+  })
+  return (
+    <>
+    <h1>Test message</h1>
+    </>
+  )
+}
+
+export default App
+```
+![alt text](image-26.png)
+
+- flow of execution : useLayoutEffect -> h1 -> useEffect
+
+let's take another example of useLayoutEffect hook with array of timing... 
+
+```jsx
+import React, { useEffect, useLayoutEffect } from 'react'
+
+const App = () => {
+  useEffect(()=>{
+    console.log('message from useEffect')
+  })
+  useLayoutEffect(()=>{
+    console.log('message from useEffectLayout')
+  })
+  return (
+    <>
+    <h1>Test message</h1>
+    {
+      Array(40000).fill('').map((item,index)=>(<li key={index}>{Math.pow(Math.random(),10)}</li>)) 
+    }
+    </>
+  )
+}
+
+export default App
+```
+- we can use useLayoutEffect hook for measuring the DOM elements, and animating the elements and for fixing the flickering issue and we can also use it for API calling but it is not recommended so, use useEffect hook as you can. 
