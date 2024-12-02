@@ -813,6 +813,7 @@ export default App
 ```
 
 # useCallback Hook
+
 - useCallback is a React Hook that lets you cache a function definition between re-renders.
 - It means, when we use the useCallback hook, it doesn't create multiple instance of same function when re-render happens.
 - instead of creating new instance of the function, it provides the cached function on re-render of the component.
@@ -853,7 +854,100 @@ export default Header
 ```
 - in the above example, when we click on button, the header component will re-render, so, to solve this problem, we need to use useCallback hook.
 - we are mounted Header in app.js file, so, when we click on button, the header component will re-render, so, to solve this problem, we need to use useCallback hook.
+- so, use memo method to solve this problem.
+  
+```jsx
+import React from 'react'
+
+const Header = () => {
+    console.log('Header rendered')
+  return (
+    <div>
+        <h1>Header</h1>
+    </div>
+  )
+}
+
+export default React.memo(Header) // use memo method to solve this problem
+```
+
+
+- now, create new function at app.js file and pass it to the header component.
 
 ```jsx
+import React, { useMemo, useState } from 'react'
+import Header from './components/Header'
+
+const App = () => {
+ 
+  const [count, setCount] = useState(0)
+  const newFn = () =>{}
+  
+  return (
+    <>
+    <Header newFn={newFn}/>
+    <h1>{count}</h1> 
+    <button onClick={()=>setCount(prev=>prev+1)}>click here</button>
+    </>
+  )
+}
+
+export default App
+```
+
+- now, it again re-render the header component. and it's happens because of referential equality. 
+
+![alt text](image-25.png)
+it gives us false, because both function create different memory location.
+
+- so, props are changes and header component will re-render, so, to solve this problem, we need to use useCallback hook.
+
+
+```jsx
+import React, { useCallback, useState } from 'react'
+import Header from './components/Header'
+
+const App = () => {
+ 
+  const [count, setCount] = useState(0)
+
+  const newFn = useCallback(()=>{},[]) // useCallback will cache the function and it will not re-render the header component.
+   
+  return (
+    <>
+    <Header newFn={newFn}/>
+    <h1>{count}</h1> 
+    <button onClick={()=>setCount(prev=>prev+1)}>click here</button>
+    </>
+  )
+}
+
+export default App
 
 ```
+```jsx
+import React, { useCallback, useState } from 'react'
+import Header from './components/Header'
+
+const App = () => {
+ 
+  const [count, setCount] = useState(0)
+
+  const newFn = useCallback((count)=>{},[count]) // we pass dependencies to useCallback, so, it will re-render the header component when the count state changes.
+  
+  return (
+    <>
+    <Header newFn={newFn}/>
+    <h1>{count}</h1> 
+    <button onClick={()=>setCount(prev=>prev+1)}>click here</button>
+    </>
+  )
+}
+
+export default App
+
+```
+
+# useLayoutEffect Hook
+
+
